@@ -1,0 +1,59 @@
+#Training the Models
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 42)
+Rclf = RandomForestClassifier(max_depth=10, min_samples_split=100,random_state=42)
+Rclf.fit(X_train, y_train)
+Aclf= GaussianNB()
+Aclf.fit(X_train,y_train)
+Ry_pred = Rclf.predict(X_test)
+Ay_pred = Aclf.predict(X_test)
+print('Random Forest Confusion matrix: ')
+Rconf=confusion_matrix(y_test, Ry_pred)
+Rconf = (Rconf / np.sum(Rconf)) * 100
+print(Rconf)
+print('Gaussian Naive Bayes Confusion matrix: ')
+Aconf=confusion_matrix(y_test, Ay_pred)
+Aconf = (Aconf / np.sum(Aconf)) * 100
+print(Aconf)
+
+print("Random Forest metrics:")
+Raccuracy = accuracy_score(y_test, Ry_pred)
+print(f"Accuracy = {round(Raccuracy,2)}")
+Rprecision = precision_score(y_test, Ry_pred)
+print(f"Precision = {round(Rprecision,2)}")
+Rrecall = recall_score(y_test, Ry_pred)
+print(f"Recall = {round(Rrecall,2)}")
+RF1_score = f1_score(y_test, Ry_pred)
+print(f"F1-Score = {round(RF1_score,2)}")
+print("--------\nGaussian Naive Bayes Metrics:")
+accuracy = accuracy_score(y_test, Ay_pred)
+print(f"Accuracy = {round(accuracy,2)}")
+precision = precision_score(y_test, Ay_pred)
+print(f"Precision = {round(precision,2)}")
+recall = recall_score(y_test, Ay_pred)
+print(f"Recall = {round(recall,2)}")
+F1_score = f1_score(y_test, Ay_pred)
+print(f"F1-Score = {round(F1_score,2)}")
+print(classification_report(y_test, Ry_pred))
+print(classification_report(y_test, Ay_pred))
+
+new_instance = pd.DataFrame({
+    'Education Qualification': ['Postgraduate'],
+    'Gender': ['Feale'],
+    'Community': ['SC/ST'],
+    'Disability': ['Yes'],
+    'Sports': ['Yes'],
+    'Annual-Percentage': ['90-100'],
+    'Income': ['Upto 1.5L'],
+    'India': ['In']
+})
+new_instance = pd.get_dummies(new_instance)
+for col in X_train.columns:
+   if col not in new_instance.columns:
+        new_instance[col] = 0
+new_instance = new_instance[X_train.columns]
+rfc_prediction = Rclf.predict(new_instance)
+print("Random Forest Classifier Prediction:", rfc_prediction)
+gnb_prediction = Aclf.predict(new_instance)
+print("Gaussian Naive Bayes Prediction:", gnb_prediction)
+
