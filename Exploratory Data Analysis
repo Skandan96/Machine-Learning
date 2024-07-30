@@ -1,0 +1,42 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+sns.set_palette("rocket")
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score,confusion_matrix,classification_report
+
+from google.colab import drive
+drive.mount('/content/drive')
+df = pd.read_excel("/content/drive/MyDrive/IS.xlsx")
+
+#EXPLORATORY DATA ANALYSIS
+
+df.describe()
+df.info()
+for col in df.columns:
+    print( df[col].value_counts() )
+    print("-"*100)
+
+def get_graph_data(df, feature_col):
+
+    df_0 = df[ df["Outcome"]==0 ][[feature_col,"Outcome"]].groupby(feature_col).count()
+    df_0 = df_0.reset_index()
+
+    df_1 = df[ df["Outcome"]==1 ][[feature_col,"Outcome"]].groupby(feature_col).count()
+    df_1 = df_1.reset_index()
+
+    df = pd.DataFrame()
+    df[feature_col] = df_0[feature_col]
+
+    df["Outcome=0"] = df_0["Outcome"]
+    df["Outcome=1"] = df_1["Outcome"]
+
+    df["Outcome_Total"] = df["Outcome=0"] + df["Outcome=1"]
+    df["Outcome=0 %"] = ( df["Outcome=0"] / df["Outcome_Total"] ) * 100
+    df["Outcome=1 %"] = ( df["Outcome=1"] / df["Outcome_Total"] ) * 100
+
+    return df
