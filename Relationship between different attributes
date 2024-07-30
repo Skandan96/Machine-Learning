@@ -1,0 +1,45 @@
+#Relationship between Scholarship Program Name & Scholarship
+
+df_name = get_graph_data(df, "Name")
+df_name["Name_fmt"] = df_name["Name"].apply(lambda x: x[0:10] + "...")
+ax = sns.barplot(data=df_name, x="Name_fmt", y="Outcome=1 %",palette="rocket")
+plt.xticks(rotation = 45, ha = 'right')
+plt.xlabel("Scholarship Program Name")
+plt.ylabel("% of Scholarships Approved")
+plt.show()
+
+#Relationship between Education Qualification & Scholarship
+
+df_education = get_graph_data(df, "Education Qualification")
+ax = sns.barplot(data=df_education, x="Education Qualification", y="Outcome=1 %")
+plt.xlabel("Education Qualification")
+plt.ylabel("% of Scholarships Approved")
+plt.show()
+
+#Relationship between Sports & Scholarship
+
+df_community = get_graph_data(df, "Sports")
+ax = sns.barplot(data=df_community, x="Sports", y="Outcome=1 %")
+ax.bar_label(ax.containers[0])
+plt.xlabel("Sports Quota?")
+plt.ylabel("% of Scholarships Approved")
+plt.show()
+
+Relationship between Annual Percentage & Scholarship
+
+df_community = get_graph_data(df, "Annual-Percentage")
+df_community
+ax = sns.barplot(data=df_community, x="Annual-Percentage", y="Outcome=1 %")
+ax.bar_label(ax.containers[0])
+plt.xlabel("Annual Percentage")
+plt.ylabel("% of Scholarships Approved")
+plt.show()
+
+#Relationship between Income & Scholarship
+
+df_community = get_graph_data(df, "Income")
+ax = sns.barplot(data=df_community, x="Income", y="Outcome=1 %")
+ax.bar_label(ax.containers[0])
+plt.xlabel("Income")
+plt.ylabel("% of Scholarships Approved")
+plt.show()
